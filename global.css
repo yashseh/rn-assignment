@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: #fff;
+        --primary: #182452;
+        --text: #121212;
+        --disabled: #868686;
+        --red: #c11919;
+    }
+}
