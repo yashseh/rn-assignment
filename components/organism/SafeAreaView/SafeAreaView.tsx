@@ -4,9 +4,14 @@ import { useScreenInsets } from '@/hooks/useScreenInsets';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-const SafeAreaView: React.FC<ISafeAreaViewProps> = ({ children, withPadding, backgroundColor = 'bg-primary' }) => {
+const SafeAreaView: React.FC<ISafeAreaViewProps> = ({
+    children,
+    withPadding,
+    backgroundColor = 'bg-primary',
+    hideBottom
+}) => {
     const { insetsTop, insetsBottom } = useScreenInsets();
-    const styles = getStyles(insetsTop, insetsBottom, withPadding);
+    const styles = getStyles(insetsTop, hideBottom ? 0 : insetsBottom, withPadding);
 
     return (
         <View className={backgroundColor} style={styles.container}>

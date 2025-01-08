@@ -12,7 +12,8 @@ module.exports = {
                 primary: 'var(--primary)',
                 text: 'var(--text)',
                 disabled: 'var(--disabled)',
-                red: 'var(--red)'
+                red: 'var(--red)',
+                orange: 'var(--orange)'
             },
             fontSize: {
                 m: [

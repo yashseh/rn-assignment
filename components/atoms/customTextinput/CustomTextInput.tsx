@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: '#fff',
         position: 'relative',
+        width: '100%',
+        height: 46,
         top: 0,
         left: 0
     }

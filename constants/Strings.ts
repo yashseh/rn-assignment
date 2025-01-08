@@ -7,5 +7,6 @@ export const STRINGS = {
     passwordField: 'password',
     usernameError: 'Please enter a valid username',
     loginSuccess: 'Login Successfully',
-    passwordError: 'Please enter a password'
+    passwordError: 'Please enter a password',
+    change: 'Change'
 };
