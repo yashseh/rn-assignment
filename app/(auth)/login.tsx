@@ -80,7 +80,7 @@ const Login = () => {
         }
     };
     return (
-        <SafeAreaView>
+        <SafeAreaView hideBottom>
             <View className="bg-primary px-6">
                 <Text className="text-ternary text-2xl font-bold text-background">{STRINGS.login}</Text>
                 <Text className="text-ternary text-m mt-1  text-disabled">{STRINGS.fill_fields}</Text>

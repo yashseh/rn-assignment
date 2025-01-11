@@ -5,13 +5,7 @@ export interface IVendorCardProps extends IVendor {
 
 export interface IVendor {
     name: string | null | undefined;
-    location:
-        | {
-              type: 'Point' | null | undefined;
-              coordinates: number[] | null | undefined;
-          }
-        | null
-        | undefined;
+    location: IVenderLocation;
     vendor_brand: string | null | undefined;
     rating: number | null | undefined;
     id: string | null | undefined;
@@ -25,6 +19,11 @@ export interface IVendor {
           }[]
         | null
         | undefined;
+}
+
+export interface IVenderLocation {
+    type: 'Point';
+    coordinates: number[];
 }
 
 export interface IVendorProduct {

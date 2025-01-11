@@ -9,7 +9,7 @@ export const vendors: IVendor[] = [
         },
         vendor_brand: 'Guess',
         rating: 6,
-        id: '89a5acbe-7c67-42ad-9af4-362128b38e09',
+        id: '0',
         brand_logo:
             'https://cloudinary-marketing-res.cloudinary.com/image/upload/c_scale,w_96,h_96,dpr_1.25/c_scale,w_auto,dpr_auto/f_auto,q_auto/v1724772832/website_2021/Marquee-Logos-16.png',
         brand_image:

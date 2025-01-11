@@ -1,9 +1,12 @@
 import { ICustomizedErrorResponse } from '@/adapters/types';
+import { ILocationProps } from '@/utils/geocoding';
 
 export type ILoginInitialState = {
     user: IUser | null;
-    status: 'loading' | 'success' | 'error';
+    status: 'idle' | 'loading' | 'success' | 'error';
     error: null | ICustomizedErrorResponse;
+    getLocationCount: number;
+    location: ILocationProps | null;
 };
 
 export type IUser = {

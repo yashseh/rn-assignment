@@ -12,6 +12,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import { ToastProvider } from 'react-native-toast-notifications';
 import LoaderWrapper from '@/wrappers/loaderWrapper';
+import Geocoder from 'react-native-geocoding';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -25,6 +26,7 @@ export default function RootLayout() {
     const [loaded] = useFonts({
         SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf')
     });
+    Geocoder.init(process.env.EXPO_PUBLIC_GOOGLE_KEY ?? '');
 
     useEffect(() => {
         if (loaded) {

@@ -29,6 +29,12 @@
                     "resizeMode": "contain",
                     "backgroundColor": "#182452"
                 }
+            ],
+            [
+                "expo-location",
+                {
+                    "locationAlwaysAndWhenInUsePermission": "Allow Assignment to use your location."
+                }
             ]
         ],
         "experiments": {

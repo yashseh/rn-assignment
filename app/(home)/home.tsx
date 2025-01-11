@@ -7,6 +7,9 @@ import SearchBar from '@/components/pages/home/SearchBar/SearchBar';
 import VendorCard from '@/components/pages/home/VendorCard/VendorCard';
 import { vendors } from '@/utils/mockdata';
 import { IVendor } from '@/components/pages/home/VendorCard/VendorCard.types';
+import { useSelector } from 'react-redux';
+import UserLocation from '../(auth)/userLocation';
+import { locationFromState } from '@/state/slices/login/LoginSlice';
 
 const Home = () => {
     const router = useRouter();

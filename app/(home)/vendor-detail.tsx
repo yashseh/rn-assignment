@@ -2,14 +2,18 @@ import { Image, ImageBackground, Pressable, StyleSheet, ScrollView, Text, View }
 import React, { useEffect, useState } from 'react';
 import SafeAreaView from '@/components/organism/SafeAreaView/SafeAreaView';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { IVendor, IVendorProduct } from '@/components/pages/home/VendorCard/VendorCard.types';
+import { IVenderLocation, IVendor, IVendorProduct } from '@/components/pages/home/VendorCard/VendorCard.types';
 import { icons } from '@/assets/exporter';
 import { useScreenInsets } from '@/hooks/useScreenInsets';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { vendors } from '@/utils/mockdata';
+import { addressHandler } from '@/utils/geocoding';
 const VendorDetail = () => {
     const params = useLocalSearchParams();
     const { insetsTop } = useScreenInsets();
     const [vendorProducts, setVendorProducts] = useState<IVendorProduct[]>([]);
+    const [venderLocation, setVendorLocation] = useState<IVenderLocation | null>(null);
+    const [vendorAddress, setVendorAddress] = useState<string>('');
     const router = useRouter();
     const vendor: IVendor = params as any;
     const onPressBack = () => {
@@ -19,15 +23,31 @@ const VendorDetail = () => {
     useEffect(() => {
         if (vendor.id) {
             const index = vendors.findIndex((vendr) => vendr.id === vendor.id);
-            if (index != 0) {
+            if (index !== -1) {
                 if (vendors[index].vendor_products) {
                     setVendorProducts(vendors[index].vendor_products[0].products ?? []);
+                    setVendorLocation(vendors[index].location);
                 }
             }
         }
     }, [vendor.id]);
 
-    console.log(vendorProducts, 'vendor_products');
+    useEffect(() => {
+        getVendorAddress();
+    }, [venderLocation]);
+
+    const getVendorAddress = async () => {
+        if (venderLocation?.coordinates) {
+            const address = await addressHandler({
+                latitude: venderLocation?.coordinates[1],
+                longitude: venderLocation?.coordinates[0]
+            });
+            if (address) {
+                setVendorAddress(address.mapAddress ?? vendor.address ?? '');
+            }
+        }
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.contentContainer} className="flex-1 bg-white">
             <ImageBackground
@@ -40,7 +60,7 @@ const VendorDetail = () => {
                     onPress={onPressBack}
                     className="border-[1px] w-10 h-10 flex-row justify-center items-center border-white p-1 rounded-full"
                 >
-                    <Image tintColor={'#fff'} source={icons.BACK_ARROW_Icon} />
+                    <Image className="fill-white" source={icons.BACK_ARROW_Icon} />
                 </Pressable>
             </ImageBackground>
             <View className="px-6  flex-1 pt-6">
@@ -76,6 +96,35 @@ const VendorDetail = () => {
                                 </View>
                             ))}
                         </View>
+                    </View>
+                )}
+                {vendorAddress && (
+                    <View className="mt-4 transition-all  duration-500 ease-in-out opacity-100 scale-100">
+                        <Text className="text-text text-xl font-bold">Vendor's Address</Text>
+                        <Text>{vendorAddress}</Text>
+                        {venderLocation && (
+                            <View className="h-48 mt-4 rounded-xl  w-full">
+                                <MapView
+                                    initialRegion={{
+                                        latitude: venderLocation.coordinates[1] ?? 0,
+                                        longitude: venderLocation.coordinates[0] ?? 0,
+                                        latitudeDelta: 0.005,
+                                        longitudeDelta: 0.005
+                                    }}
+                                    focusable={true}
+                                    provider={PROVIDER_GOOGLE}
+                                    style={StyleSheet.absoluteFill}
+                                >
+                                    <Marker
+                                        style={{ backgroundColor: 'red' }}
+                                        coordinate={{
+                                            latitude: venderLocation.coordinates[1],
+                                            longitude: venderLocation.coordinates[0]
+                                        }}
+                                    />
+                                </MapView>
+                            </View>
+                        )}
                     </View>
                 )}
             </View>
