@@ -8,11 +8,9 @@ import VendorCard from '@/components/pages/home/VendorCard/VendorCard';
 import { HomeFilters, vendors } from '@/utils/mockdata';
 import { IVendor } from '@/components/pages/home/VendorCard/VendorCard.types';
 import { useSelector } from 'react-redux';
-import UserLocation from '../(auth)/userLocation';
 import { locationFromState } from '@/state/slices/login/LoginSlice';
 import BaseBottomSheet from '@/components/atoms/baseBottomSheet/BaseBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import CustomCheckBox from '@/components/atoms/customCheckBox/CustomCheckBox';
 import CustomRadioButton from '@/components/atoms/customRadioButton/CustomRadioButton';
 import CustomButton from '@/components/atoms/customButton/CustomButton';
 import { STRINGS } from '@/constants/Strings';
@@ -25,6 +23,7 @@ const Home = () => {
     const bottomSheetRef = useRef<BottomSheetModal | null>(null);
     const filterSheetRef = useRef<BottomSheetModal | null>(null);
     const userLocation = useSelector(locationFromState);
+    const [search, setSearch] = useState('');
     const [vendorsList, setSelectedVendors] = useState<IVendor[]>([]);
     const [selectedFilter, setSelectedFilters] = useState<string[]>([]);
     const [sortByVal, setSortByVal] = useState<'none' | 'Rating' | 'Distance'>('none');
@@ -76,6 +75,21 @@ const Home = () => {
             })
         );
     };
+
+    useEffect(() => {
+        setSelectedFilters([]);
+        setSortByVal('none');
+        if (search.length > 0) {
+            const loclVendors = vendorsList.filter(
+                (vendor) =>
+                    vendor.name?.toLowerCase().includes(search.toLowerCase()) ||
+                    vendor.vendor_brand?.toLowerCase().includes(search.toLowerCase())
+            );
+            setSelectedVendors(loclVendors);
+        } else {
+            setSelectedVendors(vendors);
+        }
+    }, [search]);
 
     const renderVendorCard = useCallback(
         ({ item, index }: { item: IVendor; index: number }) => (
@@ -140,8 +154,6 @@ const Home = () => {
                 });
             }
         });
-
-        console.log('Filtered Vendors:', filteredVendors);
         setSelectedVendors(filteredVendors);
     };
 
@@ -157,7 +169,9 @@ const Home = () => {
             <View className="flex flex-col gap-y-6 px-6">
                 <LocationBar />
                 <SearchBar
-                    selectedFilter={selectedFilter.length}
+                    value={search}
+                    onChangeText={(e) => setSearch(e)}
+                    selectedFilter={selectedFilter?.length ?? 0}
                     onPressFilter={() => filterSheetRef.current?.snapToIndex(1)}
                 />
             </View>

@@ -3,7 +3,6 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import BaseBottomSheet from '@/components/atoms/baseBottomSheet/BaseBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { filterValue, IFilterListBottomSheetProps, IFilterSheet, ISelectedOption } from './FilterListBottomSheet.types';
-import CustomCheckBox from '@/components/atoms/customCheckBox/CustomCheckBox';
 import CustomButton from '@/components/atoms/customButton/CustomButton';
 import CustomRadioButton from '@/components/atoms/customRadioButton/CustomRadioButton';
 
@@ -13,7 +12,6 @@ const FilterListBottomSheet = forwardRef<BottomSheetModal, IFilterListBottomShee
         const [selectedFilterHeading, setSelectedFilterHeading] = useState<IFilterSheet>(filters[0]);
         const [selectedOptionsMap, setSelectedOptionsMap] = useState<ISelectedOption>(new Map());
 
-        console.log(initialSelectedOptions, 'SELECTED FILTERA');
         const onClose = () => {
             //@ts-ignore
             ref.current?.close();
