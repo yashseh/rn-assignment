@@ -1,5 +1,5 @@
-import { Alert, Image, Linking, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { Alert, AppState, Image, Linking, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import { icons } from '@/assets/exporter';
 import SafeAreaView from '@/components/organism/SafeAreaView/SafeAreaView';
 import { ICustomizedErrorResponse } from '@/adapters/types';
@@ -18,6 +18,8 @@ import { STRINGS } from '@/constants/Strings';
 const UserLocation = () => {
     const dispatch = useDispatch();
     const user = useSelector(userFromState);
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
     const locationAskCount = useSelector(getLocationCount);
 
     useEffect(() => {
@@ -42,7 +44,7 @@ const UserLocation = () => {
     const handleLocationError = (err: ICustomizedErrorResponse) => {
         if (err.statusCode === 0) {
             dispatch(updateGetLocationCount());
-            if (locationAskCount < 2) {
+            if (locationAskCount <= 2) {
                 Alert.alert(
                     'Permission Denied',
                     'Location permission is required to continue. Would you like to retry?',

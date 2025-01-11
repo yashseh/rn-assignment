@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginHandler, userFromState, userSliceError, userSliceState } from '@/state/slices/login/LoginSlice';
 import { AppDispatch } from '@/state/store';
 import { useToast } from 'react-native-toast-notifications';
+import { useRouter } from 'expo-router';
 
 type IHomeStateProps = {
     username: string;
@@ -24,6 +25,7 @@ const Login = () => {
     const isLoading = useSelector(userSliceState) === 'loading';
     const isSuccess = useSelector(userSliceState) === 'success';
     const error = useSelector(userSliceError);
+    const router = useRouter();
     const toast = useToast();
 
     const [state, updateState] = useReducer(
@@ -55,6 +57,7 @@ const Login = () => {
                 toast.show(STRINGS.loginSuccess, {
                     type: 'success'
                 });
+                navigateToNextScreen();
             }
         }
     }, [isSuccess]);
@@ -63,6 +66,10 @@ const Login = () => {
         updateState({ ...state, [field]: value, [`${field}Error`]: '' });
     };
 
+    const navigateToNextScreen = () => {
+        router.dismissAll();
+        router.replace('/(auth)/user-location');
+    };
     const onSubmit = () => {
         let isValid = true;
         const username = state.username.trim();

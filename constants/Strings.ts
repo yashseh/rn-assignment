@@ -16,7 +16,7 @@ export const STRINGS = {
     greaterThanFive: 'greater than 5',
     greaterThanSeven: 'greater than 7',
     itLooksLike:
-        'It looks like you have turned off location permission required for this features. It can be enabled under Phone Settings > Apps > rn-assignment > Permissions',
+        'It looks like you have turned off location permission required for this features. It can be enabled under Phone Settings > Apps > rn-assignment > Permissions and then restart the app again',
     distance: 'Distance',
     withinTwo: 'within 2Km',
     withinFive: 'within 5Km',
