@@ -13,7 +13,8 @@ module.exports = {
                 text: 'var(--text)',
                 disabled: 'var(--disabled)',
                 red: 'var(--red)',
-                orange: 'var(--orange)'
+                orange: 'var(--orange)',
+                ternary: 'var(--ternary)'
             },
             fontSize: {
                 m: [

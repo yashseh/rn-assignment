@@ -1,5 +1,6 @@
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -13,6 +14,7 @@ import { Provider } from 'react-redux';
 import { ToastProvider } from 'react-native-toast-notifications';
 import LoaderWrapper from '@/wrappers/loaderWrapper';
 import Geocoder from 'react-native-geocoding';
+import { PortalProvider } from '@gorhom/portal';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -39,19 +41,23 @@ export default function RootLayout() {
     }
 
     return (
-        <Provider store={store.store}>
-            <PersistGate loading={null} persistor={store.persistor}>
-                <ToastProvider placement="top" duration={3000} animationType="zoom-in" swipeEnabled>
-                    <LoaderWrapper>
-                        <Stack screenOptions={{ headerShown: false }}>
-                            <Stack.Screen name="(auth)" />
-                            <Stack.Screen name="(home)" />
-                            <Stack.Screen name="+not-found" />
-                        </Stack>
-                        <StatusBar translucent backgroundColor="transparent" style="auto" />
-                    </LoaderWrapper>
-                </ToastProvider>
-            </PersistGate>
-        </Provider>
+        <GestureHandlerRootView>
+            <Provider store={store.store}>
+                <PersistGate loading={null} persistor={store.persistor}>
+                    <ToastProvider placement="top" duration={3000} animationType="zoom-in" swipeEnabled>
+                        <LoaderWrapper>
+                            <PortalProvider>
+                                <Stack screenOptions={{ headerShown: false }}>
+                                    <Stack.Screen name="(auth)" />
+                                    <Stack.Screen name="(home)" />
+                                    <Stack.Screen name="+not-found" />
+                                </Stack>
+                                <StatusBar translucent backgroundColor="transparent" style="auto" />
+                            </PortalProvider>
+                        </LoaderWrapper>
+                    </ToastProvider>
+                </PersistGate>
+            </Provider>
+        </GestureHandlerRootView>
     );
 }

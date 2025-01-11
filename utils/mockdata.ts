@@ -1,4 +1,6 @@
+import { IFilterSheet } from '@/components/organism/filterListBottonSheet/FilterListBottomSheet.types';
 import { IVendor } from '@/components/pages/home/VendorCard/VendorCard.types';
+import { STRINGS } from '@/constants/Strings';
 
 export const vendors: IVendor[] = [
     {
@@ -303,6 +305,58 @@ export const vendors: IVendor[] = [
                         }
                     }
                 ]
+            }
+        ]
+    }
+];
+
+export const HomeFilters: IFilterSheet[] = [
+    {
+        id: 1,
+        title: STRINGS.rating,
+        value: [
+            {
+                id: 2,
+                subTitle: STRINGS.lessThanFive,
+                rowId: 1,
+                value: '5'
+            },
+            {
+                id: 3,
+                subTitle: STRINGS.greaterThanFive,
+                rowId: 1,
+                value: '7'
+            },
+            {
+                id: 4,
+                subTitle: STRINGS.greaterThanSeven,
+                rowId: 1,
+                value: '8'
+            }
+        ]
+    },
+    {
+        id: 5,
+        title: STRINGS.distance,
+        value: [
+            {
+                id: 6,
+                subTitle: STRINGS.withinTwo,
+                rowId: 5,
+                value: '2'
+            },
+
+            {
+                id: 7,
+                subTitle: STRINGS.withinFive,
+                rowId: 5,
+                value: '5'
+            },
+            {
+                id: 8,
+                subTitle: STRINGS.withinTen,
+                rowId: 5,
+                value: '10'
             }
         ]
     }
