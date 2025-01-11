@@ -1,6 +1,7 @@
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import React from 'react';
 import { icons } from '@/assets/exporter';
+import SearchInput from '@/components/molecules/searchInput/SearchInput';
 
 type ISearchBarProps = {
     onPressFilter: () => void;
@@ -11,15 +12,7 @@ type ISearchBarProps = {
 const SearchBar: React.FC<ISearchBarProps> = ({ onPressFilter, selectedFilter, value, onChangeText }) => {
     return (
         <View className="flex flex-row w-full  gap-x-2 items-center">
-            <View className="flex-1 flex-row px-2 items-center  gap-x-1 rounded-[40px] bg-white">
-                <Image source={icons.Search_Icon} />
-                <TextInput
-                    value={value}
-                    onChangeText={onChangeText}
-                    className="flex-1 text-text "
-                    placeholder="Search for Vendors"
-                />
-            </View>
+            <SearchInput placeholder="Search for Vendors" value={value} onChangeText={onChangeText} />
 
             <Pressable className="relative top-0 left-0" onPress={onPressFilter}>
                 <Image className="relative top-0 left-0" source={icons.Settings_Icon} />

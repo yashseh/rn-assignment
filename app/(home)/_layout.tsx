@@ -7,6 +7,7 @@ const HomeLayout = () => {
         <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="home" />
             <Stack.Screen name="vendor-detail" />
+            <Stack.Screen name="change-location" />
         </Stack>
     );
 };
