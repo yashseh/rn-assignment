@@ -5,7 +5,7 @@ import { ISearchInputProps } from './SearchInput.types';
 
 const SearchInput: React.FC<ISearchInputProps> = ({ value, onChangeText, placeholder }) => {
     return (
-        <View className="flex-1 flex-row px-2 items-center  gap-x-1 rounded-[40px] bg-white">
+        <View className="flex-1 flex-row px-2 items-center min-h-11  gap-x-1 rounded-[40px] bg-white">
             <Image source={icons.Search_Icon} />
             <TextInput
                 value={value}

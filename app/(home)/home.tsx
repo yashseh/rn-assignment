@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import SafeAreaView from '@/components/organism/SafeAreaView/SafeAreaView';
 import LocationBar from '@/components/pages/home/LocationBar/LocationBar';
@@ -27,9 +27,13 @@ const Home = () => {
     const [vendorsList, setSelectedVendors] = useState<IVendor[]>([]);
     const [selectedFilter, setSelectedFilters] = useState<string[]>([]);
     const [sortByVal, setSortByVal] = useState<'none' | 'Rating' | 'Distance'>('none');
+    const [loading, setLoading] = useState(true); // Loading state
 
     useEffect(() => {
-        setSelectedVendors(vendors);
+        setTimeout(() => {
+            setSelectedVendors(vendors);
+            setLoading(false); // Simulating content load completion
+        }, 2000); // You can adjust this time to simulate the load time
     }, []);
 
     const handleVendorPress = useCallback(
@@ -116,16 +120,11 @@ const Home = () => {
 
     const onPressApplyFilter = (values: filterValue[]) => {
         setSortByVal('none');
-
-        // Reset to the original vendors list for filtering
         let filteredVendors = [...vendors];
 
         values.forEach((filter) => {
-            setSelectedFilters((prevFilters) => [
-                ...(prevFilters ?? ''),
-                ...values.map((filter) => filter.subTitle ?? '')
-            ]);
-            const filterValue = parseFloat(filter.value); // Convert value to a float
+            setSelectedFilters((prevFilters) => [...values.map((filter) => filter.subTitle ?? '')]);
+            const filterValue = parseFloat(filter.value);
             console.log('Applying filter:', filter, 'Parsed Value:', filterValue);
 
             if (filter.rowId === 1) {
@@ -176,26 +175,37 @@ const Home = () => {
                 />
             </View>
             <View className="bg-white mt-6 p-6 rounded-t-[56px] flex-1">
-                <View className="flex-row items-center">
-                    <Text className="text-2xl flex-1 font-bold pb-2">Vendors</Text>
-                    <Text onPress={() => bottomSheetRef.current?.snapToIndex(1)} className="text-orange  text-xl">
-                        {STRINGS.sortBy}
-                    </Text>
-                </View>
-                <FlatList
-                    data={vendorsList}
-                    className="mt-2"
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ flexGrow: 1 }}
-                    ItemSeparatorComponent={renderSeparator}
-                    keyExtractor={(item, index) => `${item.id || ''}-${index}`}
-                    ListEmptyComponent={
-                        <View className="flex-1 flex-row justify-center  items-center">
-                            <Text className="text-center text-2xl">No Vendors</Text>
+                {loading ? (
+                    <View className="flex-1 justify-center items-center">
+                        <ActivityIndicator size="large" color="#FF6347" />
+                    </View>
+                ) : (
+                    <>
+                        <View className="flex-row items-center">
+                            <Text className="text-2xl flex-1 font-bold pb-2">Vendors</Text>
+                            <Text
+                                onPress={() => bottomSheetRef.current?.snapToIndex(1)}
+                                className="text-orange text-xl"
+                            >
+                                {STRINGS.sortBy}
+                            </Text>
                         </View>
-                    }
-                    renderItem={renderVendorCard}
-                />
+                        <FlatList
+                            data={vendorsList}
+                            className="mt-2"
+                            showsVerticalScrollIndicator={false}
+                            contentContainerStyle={{ flexGrow: 1 }}
+                            ItemSeparatorComponent={renderSeparator}
+                            keyExtractor={(item, index) => `${item.id || ''}-${index}`}
+                            ListEmptyComponent={
+                                <View className="flex-1 flex-row justify-center items-center">
+                                    <Text className="text-center text-2xl">No Vendors</Text>
+                                </View>
+                            }
+                            renderItem={renderVendorCard}
+                        />
+                    </>
+                )}
                 <BaseBottomSheet
                     snapPoints={[0.01, 200]}
                     headerTitle="SORT BY"

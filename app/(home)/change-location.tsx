@@ -78,7 +78,7 @@ const ChangeLocation = () => {
                         );
                     }}
                     query={{
-                        key: process.env.EXPO_PUBLIC_GOOGLE_KEY,
+                        key: 'AIzaSyBSyuQoXKGljs7QM40qz-AbyQI2IwWAMBk',
                         language: 'en',
                         components: 'country:IN',
                         radius: '5000'

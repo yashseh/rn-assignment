@@ -1,5 +1,5 @@
-import { View, Text, Alert } from 'react-native';
-import React, { useEffect, useReducer } from 'react';
+import { View, Text } from 'react-native';
+import React, { useEffect, useReducer, useTransition } from 'react';
 import SafeAreaView from '@/components/organism/SafeAreaView/SafeAreaView';
 import { STRINGS } from '@/constants/Strings';
 import { TextInput } from 'react-native-paper';
@@ -27,6 +27,7 @@ const Login = () => {
     const error = useSelector(userSliceError);
     const router = useRouter();
     const toast = useToast();
+    const [isPending, startTransition] = useTransition(); // Optimized navigation with transition
 
     const [state, updateState] = useReducer(
         (prev: IHomeStateProps, next: Partial<IHomeStateProps>) => {
@@ -67,9 +68,12 @@ const Login = () => {
     };
 
     const navigateToNextScreen = () => {
-        router.dismissAll();
-        router.replace('/(auth)/user-location');
+        startTransition(() => {
+            router.dismissAll();
+            router.replace('/(auth)/user-location');
+        });
     };
+
     const onSubmit = () => {
         let isValid = true;
         const username = state.username.trim();
@@ -86,11 +90,12 @@ const Login = () => {
             dispatch(loginHandler({ username: username, password: password }));
         }
     };
+
     return (
         <SafeAreaView hideBottom>
             <View className="bg-primary px-6">
-                <Text className="text-ternary text-2xl font-bold text-background">{STRINGS.login}</Text>
-                <Text className="text-ternary text-m mt-1  text-disabled">{STRINGS.fill_fields}</Text>
+                <Text className=" text-2xl font-bold text-background">{STRINGS.login}</Text>
+                <Text className=" text-m mt-1  text-disabled">{STRINGS.fill_fields}</Text>
             </View>
             <View className="bg-background mt-6 gap-y-6 flex-1 p-6 rounded-tl-[56px]">
                 <CustomTextInput

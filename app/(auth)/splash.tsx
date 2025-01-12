@@ -1,19 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { locationFromState, userFromState } from '@/state/slices/login/LoginSlice';
-import { router, useNavigation } from 'expo-router';
+import { router } from 'expo-router';
 
 const Splash = () => {
     const user = useSelector(userFromState);
     const userLocation = useSelector(locationFromState);
+    const [isPending, setIsPending] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             navigationHandler();
         }, 500);
-    });
+
+        return () => clearTimeout(timer);
+    }, []);
+
     const navigationHandler = () => {
+        setIsPending(true);
         if (user) {
             if (userLocation) {
                 router.replace('/(home)/home');

@@ -29,7 +29,16 @@ export default function RootLayout() {
     const [loaded] = useFonts({
         SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf')
     });
-    Geocoder.init(process.env.EXPO_PUBLIC_GOOGLE_KEY ?? '');
+
+    useEffect(() => {
+        if (!Geocoder.isInit) {
+            try {
+                Geocoder.init('AIzaSyBSyuQoXKGljs7QM40qz-AbyQI2IwWAMBk');
+            } catch (error) {
+                console.error('Geocoder initialization error:', error);
+            }
+        }
+    }, []);
 
     useEffect(() => {
         if (loaded) {

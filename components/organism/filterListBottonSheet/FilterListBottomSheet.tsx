@@ -12,6 +12,8 @@ const FilterListBottomSheet = forwardRef<BottomSheetModal, IFilterListBottomShee
         const [selectedFilterHeading, setSelectedFilterHeading] = useState<IFilterSheet>(filters[0]);
         const [selectedOptionsMap, setSelectedOptionsMap] = useState<ISelectedOption>(new Map());
 
+        console.log(initialSelectedOptions, 'INITIAL SELECTED OPTIONS');
+
         const onClose = () => {
             //@ts-ignore
             ref.current?.close();

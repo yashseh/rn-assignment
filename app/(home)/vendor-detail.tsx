@@ -1,4 +1,4 @@
-import { Image, ImageBackground, Pressable, StyleSheet, ScrollView, Text, View } from 'react-native';
+import { Image, ImageBackground, Pressable, StyleSheet, ScrollView, Text, Animated, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import SafeAreaView from '@/components/organism/SafeAreaView/SafeAreaView';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -8,14 +8,18 @@ import { useScreenInsets } from '@/hooks/useScreenInsets';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { vendors } from '@/utils/mockdata';
 import { addressHandler } from '@/utils/geocoding';
+
 const VendorDetail = () => {
     const params = useLocalSearchParams();
     const { insetsTop } = useScreenInsets();
     const [vendorProducts, setVendorProducts] = useState<IVendorProduct[]>([]);
     const [venderLocation, setVendorLocation] = useState<IVenderLocation | null>(null);
     const [vendorAddress, setVendorAddress] = useState<string>('');
+    const [opacity] = useState(new Animated.Value(0)); // Initial opacity
+    const [scale] = useState(new Animated.Value(0.95)); // Initial scale
     const router = useRouter();
     const vendor: IVendor = params as any;
+
     const onPressBack = () => {
         router.back();
     };
@@ -47,6 +51,23 @@ const VendorDetail = () => {
             }
         }
     };
+
+    useEffect(() => {
+        // Animate the opacity and scale once the address is available
+        if (vendorAddress) {
+            Animated.timing(opacity, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true
+            }).start();
+
+            Animated.timing(scale, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true
+            }).start();
+        }
+    }, [vendorAddress]);
 
     return (
         <ScrollView contentContainerStyle={styles.contentContainer} className="flex-1 bg-white">
@@ -98,12 +119,19 @@ const VendorDetail = () => {
                         </View>
                     </View>
                 )}
+
                 {vendorAddress && (
-                    <View className="mt-4 transition-all  duration-500 ease-in-out opacity-100 scale-100">
+                    <Animated.View
+                        style={{
+                            opacity: opacity,
+                            transform: [{ scale: scale }]
+                        }}
+                        className="mt-4"
+                    >
                         <Text className="text-text text-xl font-bold">Vendor's Address</Text>
                         <Text>{vendorAddress}</Text>
                         {venderLocation && (
-                            <View className="h-48 mt-4 rounded-xl  w-full">
+                            <View className="h-48 mt-4 rounded-xl w-full">
                                 <MapView
                                     initialRegion={{
                                         latitude: venderLocation.coordinates[1] ?? 0,
@@ -125,7 +153,7 @@ const VendorDetail = () => {
                                 </MapView>
                             </View>
                         )}
-                    </View>
+                    </Animated.View>
                 )}
             </View>
         </ScrollView>
